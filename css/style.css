@@ -127,3 +127,38 @@ label, .result-row span:first-child {
     gap: 1rem;
     margin-bottom: 1rem;
 }
+
+.main-nav {
+    display: flex;
+    background-color: #f4f7fa;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.nav-link {
+    padding: 1rem 1.5rem;
+    text-decoration: none;
+    color: var(--secondary-text);
+    font-weight: 500;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s ease-in-out;
+}
+
+.nav-link:hover {
+    color: var(--primary-text);
+}
+
+.nav-link.active {
+    color: var(--primary-text);
+    border-bottom-color: #3182ce;
+}
+
+.view {
+    display: none; /* Oculta todas as views por padrão */
+}
+
+.view.active-view {
+    display: block; /* Mostra apenas a view ativa */
+}
+
+.glossary-content h4 { margin-top: 1.5rem; }
+.glossary-content p { line-height: 1.6; color: var(--secondary-text); }

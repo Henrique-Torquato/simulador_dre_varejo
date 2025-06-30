@@ -3,165 +3,211 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>INatto Insights | Simulador RGM Dinâmico</title>
+    <title>Matriz de Causa e Efeito RGM</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <div class="simulator-container">
         <header>
-            <h1>Simulador RGM Estratégico Dinâmico</h1>
+            <h1>Matriz RGM Estratégica v2.0</h1>
             <p>Análise de Sensibilidade Bidirecional</p>
         </header>
+
+        <nav class="main-nav">
+            <a href="#" class="nav-link active" data-view="buildup">1. Simular Preço (Buildup)</a>
+            <a href="#" class="nav-link" data-view="breakdown">2. Simular Margem (Breakdown)</a>
+            <a href="#" class="nav-link" data-view="glossary">3. Glossário / Metodologia</a>
+        </nav>
+
         <main>
-            <fieldset>
-                <legend>1. Estrutura de Preço (Indústria)</legend>
-                <div class="form-row-header">
-                    <span>Item</span>
-                    <span>Percentual (%)</span>
-                    <span>Valor (R$)</span>
-                </div>
-                <div class="form-row">
-                    <label>Receita Líquida Alvo</label>
-                    <span></span> <input type="number" id="ind_receitaLiquida_valor" class="input-field" placeholder="100.00">
-                </div>
-                <div class="form-row-dual">
-                    <label>PIS/COFINS</label>
-                    <input type="number" id="ind_pisCofins_perc" class="input-field" placeholder="9.25">
-                    <input type="number" id="ind_pisCofins_valor" class="input-field" placeholder="0.00">
-                </div>
-                <div class="form-row-dual">
-                    <label>ICMS</label>
-                    <input type="number" id="ind_icms_perc" class="input-field" placeholder="18.00">
-                    <input type="number" id="ind_icms_valor" class="input-field" placeholder="0.00">
-                </div>
-                <div class="result-row bold">
-                    <span>(=) Receita Bruta (NF)</span>
-                    <span id="ind_receitaBruta_perc" class="result-value">-</span>
-                    <span id="ind_receitaBruta_valor" class="result-value">R$ 0,00</span>
-                </div>
-                <hr>
-                <div class="form-row-dual">
-                    <label>IPI</label>
-                    <input type="number" id="ind_ipi_perc" class="input-field" placeholder="5.00">
-                    <input type="number" id="ind_ipi_valor" class="input-field" placeholder="0.00">
-                </div>
-                <div class="result-row">
-                    <span>(=) Preço Nota Fiscal c/ IPI</span>
-                    <span class="result-value">-</span>
-                    <span id="ind_precoNFcomIPI_valor" class="result-value">R$ 0,00</span>
-                </div>
-                <hr>
-                <div class="form-row-dual">
-                    <label>ICMS-ST</label>
-                    <input type="number" id="ind_st_perc" class="input-field" placeholder="10.00">
-                    <input type="number" id="ind_st_valor" class="input-field" placeholder="0.00">
-                </div>
-                <div class="result-row highlight">
-                    <span>(=) Valor Total da Nota Fiscal</span>
-                     <span class="result-value">-</span>
-                    <span id="ind_totalNF_valor" class="result-value">R$ 0,00</span>
-                </div>
-            </fieldset>
+            <section id="view-buildup" class="view active-view">
+                <fieldset>
+                    <legend>1. Estrutura de Preço (Indústria)</legend>
+                    <div class="form-row-header">
+                        <span>Descrição</span>
+                        <span>% da Rec. Bruta</span>
+                        <span>Valor (R$)</span>
+                    </div>
+                    <div class="form-row">
+                        <label for="ind_receitaLiquida_valor">Receita Líquida Alvo (Indústria)</label>
+                        <span></span>
+                        <input type="text" id="ind_receitaLiquida_valor" class="input-field" placeholder="100,00" data-mask="currency">
+                    </div>
+                    <hr>
+                    <div class="result-row bold">
+                        <span>(=) Receita Bruta</span>
+                        <span></span>
+                        <span id="ind_receitaBruta_valor" class="result-value">R$ 0,00</span>
+                    </div>
+                    <div class="form-row-dual">
+                        <label for="ind_pisCofins_perc">(-) PIS/COFINS</label>
+                        <input type="text" id="ind_pisCofins_perc" class="input-field" placeholder="9,25" data-mask="percent">
+                        <input type="text" id="ind_pisCofins_valor" class="input-field" placeholder="0,00" data-mask="currency">
+                    </div>
+                    <div class="form-row-dual">
+                        <label for="ind_icms_perc">(-) ICMS</label>
+                        <input type="text" id="ind_icms_perc" class="input-field" placeholder="18,00" data-mask="percent">
+                        <input type="text" id="ind_icms_valor" class="input-field" placeholder="0,00" data-mask="currency">
+                    </div>
+                    <div class="form-row-dual">
+                        <label for="ind_ipi_perc">(+) IPI</label>
+                        <input type="text" id="ind_ipi_perc" class="input-field" placeholder="5,00" data-mask="percent">
+                        <input type="text" id="ind_ipi_valor" class="input-field" placeholder="0,00" data-mask="currency">
+                    </div>
+                    <div class="result-row bold">
+                        <span>(=) Preço NF (sem ST)</span>
+                        <span></span>
+                        <span id="ind_precoNFcomIPI_valor" class="result-value">R$ 0,00</span>
+                    </div>
+                    <div class="form-row-dual">
+                        <label for="ind_st_perc">(+) ICMS-ST</label>
+                        <input type="text" id="ind_st_perc" class="input-field" placeholder="0,00" data-mask="percent">
+                        <input type="text" id="ind_st_valor" class="input-field" placeholder="0,00" data-mask="currency">
+                    </div>
+                    <hr>
+                    <div class="result-row highlight final-profit">
+                        <span>(=) Total Nota Fiscal</span>
+                        <span></span>
+                        <span id="ind_totalNF_valor" class="result-value">R$ 0,00</span>
+                    </div>
+                </fieldset>
 
-            <fieldset>
-                <legend>2. Estrutura de Preço (Varejo - Leo Madeiras)</legend>
-                <div class="form-row-header">
-                    <span>Item</span>
-                    <span>Percentual (%)</span>
-                    <span>Valor (R$)</span>
-                </div>
-                <div class="checkbox-row">
-                    <label for="var_recuperaPisCofins">Cliente recupera PIS/COFINS de compra?</label>
-                    <input type="checkbox" id="var_recuperaPisCofins">
-                </div>
-                <div class="result-row">
-                    <span>(=) Custo Cliente (Efetivo)</span>
-                    <span class="result-value">-</span>
-                    <span id="var_custoCliente_valor" class="result-value">R$ 0,00</span>
-                </div>
-                <hr>
-                <div class="form-row">
-                    <label>Margem Alvo do Varejo</label>
-                    <input type="number" id="var_margem_perc" class="input-field" placeholder="40">
-                    <span></span>
-                </div>
-                 <div class="form-row">
-                    <label>ICMS sobre Venda Varejo</label>
-                    <input type="number" id="var_icmsVenda_perc" class="input-field" placeholder="18">
-                     <span></span>
-                </div>
-                <div class="form-row">
-                    <label>PIS/COFINS sobre Venda Varejo</label>
-                    <input type="number" id="var_pisCofinsVenda_perc" class="input-field" placeholder="9.25">
-                     <span></span>
-                </div>
-                <div class="result-row">
-                    <span>ICMS Venda</span>
-                    <span class="result-value">-</span>
-                    <span id="var_icmsVenda_valor" class="result-value">R$ 0,00</span>
-                </div>
-                <div class="result-row">
-                    <span>PIS/COFINS Venda</span>
-                     <span class="result-value">-</span>
-                    <span id="var_pisCofinsVenda_valor" class="result-value">R$ 0,00</span>
-                </div>
-                <div class="result-row highlight">
-                    <span>(=) Preço de Venda Final</span>
-                    <span class="result-value">-</span>
-                    <span id="var_precoVenda_valor" class="result-value">R$ 0,00</span>
-                </div>
-            </fieldset>
+                <fieldset>
+                    <legend>2. Estrutura de Preço (Varejo - Leo Madeiras)</legend>
+                    <div class="form-row-header">
+                        <span>Descrição</span>
+                        <span>% do Preço Venda</span>
+                        <span>Valor (R$)</span>
+                    </div>
+                    <div class="checkbox-row">
+                        <input type="checkbox" id="var_recuperaPisCofins" checked>
+                        <label for="var_recuperaPisCofins">Recupera Crédito de PIS/COFINS?</label>
+                    </div>
+                    <div class="result-row bold">
+                        <span>Custo de Aquisição (CPV)</span>
+                        <span></span>
+                        <span id="var_custoCliente_valor" class="result-value">R$ 0,00</span>
+                    </div>
+                    <hr>
+                    <div class="form-row">
+                        <label for="var_margem_perc">Margem Bruta do Varejo (Markup Divisor)</label>
+                        <input type="text" id="var_margem_perc" class="input-field" placeholder="30,00" data-mask="percent">
+                        <span></span>
+                    </div>
+                    <div class="form-row">
+                        <label for="var_icmsVenda_perc">ICMS sobre Venda</label>
+                        <input type="text" id="var_icmsVenda_perc" class="input-field" placeholder="18,00" data-mask="percent">
+                        <span id="var_icmsVenda_valor" class="result-value">R$ 0,00</span>
+                    </div>
+                    <div class="form-row">
+                        <label for="var_pisCofinsVenda_perc">PIS/COFINS sobre Venda</label>
+                        <input type="text" id="var_pisCofinsVenda_perc" class="input-field" placeholder="9,25" data-mask="percent">
+                        <span id="var_pisCofinsVenda_valor" class="result-value">R$ 0,00</span>
+                    </div>
+                    <hr>
+                    <div class="result-row highlight final-profit">
+                        <span>(=) Preço de Venda Final</span>
+                        <span></span>
+                        <span id="var_precoVenda_valor" class="result-value">R$ 0,00</span>
+                    </div>
+                </fieldset>
 
-            <fieldset class="analysis-block">
-                <legend>3. Análise de Margem de Contribuição (Indústria)</legend>
-                 <div class="form-row-header">
-                    <span>Item</span>
-                    <span>Percentual (%)</span>
-                    <span>Valor (R$)</span>
-                </div>
-                <div class="result-row">
-                    <span>Receita Bruta</span>
-                    <span id="dre_receitaBruta_perc" class="result-value">-</span>
-                    <span id="dre_receitaBruta_valor" class="result-value">R$ 0,00</span>
-                </div>
-                <div class="result-row">
-                    <span>(-) Impostos</span>
-                    <span id="dre_impostos_perc" class="result-value">0,00%</span>
-                    <span id="dre_impostos_valor" class="result-value">R$ 0,00</span>
-                </div>
-                 <div class="form-row-dual">
-                    <label>(-) Acordos Comerciais</label>
-                    <input type="number" id="dre_acordos_perc" class="input-field" placeholder="2.00">
-                    <input type="number" id="dre_acordos_valor" class="input-field" placeholder="0.00">
-                </div>
-                <div class="result-row bold">
-                    <span>(=) Receita Líquida (DRE)</span>
-                    <span id="dre_receitaLiquida_perc" class="result-value">0,00%</span>
-                    <span id="dre_receitaLiquida_valor" class="result-value">R$ 0,00</span>
-                </div>
-                 <div class="form-row-dual">
-                    <label>(-) CPV</label>
-                    <input type="number" id="dre_cpv_perc" class="input-field" placeholder="60.00">
-                    <input type="number" id="dre_cpv_valor" class="input-field" placeholder="0.00">
-                </div>
-                <div class="result-row highlight">
-                    <span>(=) Margem Bruta</span>
-                    <span id="dre_margemBruta_perc" class="result-value">0,00%</span>
-                    <span id="dre_margemBruta_valor" class="result-value">R$ 0,00</span>
-                </div>
-                <div class="form-row-dual">
-                    <label>(-) Frete</label>
-                    <input type="number" id="dre_frete_perc" class="input-field" placeholder="5.00">
-                    <input type="number" id="dre_frete_valor" class="input-field" placeholder="0.00">
-                </div>
-                <div class="result-row highlight final-profit">
-                    <span>(=) Margem Variável</span>
-                    <span id="dre_margemVariavel_perc" class="result-value">0,00%</span>
-                    <span id="dre_margemVariavel_valor" class="result-value">R$ 0,00</span>
-                </div>
-            </fieldset>
+                <fieldset>
+                    <legend>3. Análise de Margem de Contribuição (DRE)</legend>
+                     <div class="form-row-header">
+                        <span>Descrição</span>
+                        <span>% da Rec. Líquida</span>
+                        <span>Valor (R$)</span>
+                    </div>
+                     <div class="result-row bold">
+                        <span>Receita Bruta</span>
+                        <span></span>
+                        <span id="dre_receitaBruta_valor" class="result-value">R$ 0,00</span>
+                    </div>
+                    <div class="result-row">
+                        <span>(-) Impostos (PIS/COFINS/ICMS)</span>
+                        <span id="dre_impostos_perc" class="result-value">0,00%</span>
+                        <span id="dre_impostos_valor" class="result-value">R$ 0,00</span>
+                    </div>
+                    <div class="form-row-dual">
+                        <label for="dre_acordos_perc">(-) Acordos Comerciais</label>
+                        <input type="text" id="dre_acordos_perc" class="input-field" placeholder="0,00" data-mask="percent">
+                        <input type="text" id="dre_acordos_valor" class="input-field" placeholder="0,00" data-mask="currency">
+                    </div>
+                     <div class="result-row bold">
+                        <span>(=) Receita Líquida</span>
+                        <span id="dre_receitaLiquida_perc" class="result-value">0,00%</span>
+                        <span id="dre_receitaLiquida_valor" class="result-value">R$ 0,00</span>
+                    </div>
+                    <div class="form-row-dual">
+                        <label for="dre_cpv_perc">(-) CPV</label>
+                        <input type="text" id="dre_cpv_perc" class="input-field" placeholder="0,00" data-mask="percent">
+                        <input type="text" id="dre_cpv_valor" class="input-field" placeholder="0,00" data-mask="currency">
+                    </div>
+                     <div class="result-row bold">
+                        <span>(=) Margem Bruta</span>
+                        <span id="dre_margemBruta_perc" class="result-value">0,00%</span>
+                        <span id="dre_margemBruta_valor" class="result-value">R$ 0,00</span>
+                    </div>
+                    <div class="form-row-dual">
+                        <label for="dre_frete_perc">(-) Frete</label>
+                        <input type="text" id="dre_frete_perc" class="input-field" placeholder="0,00" data-mask="percent">
+                        <input type="text" id="dre_frete_valor" class="input-field" placeholder="0,00" data-mask="currency">
+                    </div>
+                     <hr>
+                     <div class="result-row highlight final-profit">
+                        <span>(=) Margem de Contribuição Variável</span>
+                        <span id="dre_margemVariavel_perc" class="result-value">0,00%</span>
+                        <span id="dre_margemVariavel_valor" class="result-value">R$ 0,00</span>
+                    </div>
+                </fieldset>
+            </section>
+
+            <section id="view-breakdown" class="view">
+                <fieldset>
+                    <legend>Análise de Margem a partir do Preço de Venda</legend>
+                    <div class="form-row">
+                        <label>Preço de Venda Final (Simulado)</label>
+                        <span></span>
+                        <input type="text" id="sim_precoVenda_valor" class="input-field" placeholder="250,00" data-mask="currency">
+                    </div>
+                    <hr>
+                    <div class="result-row bold">
+                        <span>Custo do Varejo (vinda da Simulação 1)</span>
+                        <span></span>
+                        <span id="sim_custoCliente_valor" class="result-value">R$ 0,00</span>
+                    </div>
+                    <div class="result-row">
+                        <span>(-) Impostos sobre Venda</span>
+                        <span></span>
+                        <span id="sim_impostosVenda_valor" class="result-value">R$ 0,00</span>
+                    </div>
+                    <div class="result-row highlight">
+                        <span>(=) Lucro Bruto do Varejo</span>
+                        <span></span>
+                        <span id="sim_lucroBruto_valor" class="result-value">R$ 0,00</span>
+                    </div>
+                    <div class="result-row highlight final-profit">
+                        <span>(%) Margem Bruta do Varejo</span>
+                        <span id="sim_margemBruta_perc" class="result-value">0,00%</span>
+                        <span></span>
+                    </div>
+                </fieldset>
+            </section>
+
+            <section id="view-glossary" class="view">
+                <article class="glossary-content">
+                    <h3>Glossário de Termos e Metodologias</h3>
+                    <h4>Tese do Século (Cálculo de PIS/COFINS)</h4>
+                    <p>O cálculo de PIS/COFINS na ferramenta exclui o valor do ICMS de sua base de cálculo. A fórmula é: <strong>Valor PIS/COFINS = (Receita Bruta - ICMS) * %PIS/COFINS</strong>. Isso garante precisão fiscal máxima e evita a erosão de margem por cálculo incorreto de impostos.</p>
+                    
+                    <h4>Markup Divisor vs. Markup Multiplicador</h4>
+                    <p>A ferramenta usa o <strong>Markup Divisor</strong> para calcular o preço de venda (Visão 1). Fórmula: <strong>Preço Venda = Custo / (1 - (%Margem + %Impostos Venda))</strong>. Este método garante que a margem desejada seja alcançada sobre o preço final, enquanto um simples multiplicador aplicaria a margem sobre o custo, resultando em uma margem final menor.</p>
+                </article>
+            </section>
         </main>
     </div>
+    
     <script src="js/main.js"></script>
 </body>
 </html>
