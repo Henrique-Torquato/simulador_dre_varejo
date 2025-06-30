@@ -1,0 +1,129 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+:root {
+    --bg-color: #f4f7fa;
+    --container-bg: #ffffff;
+    --primary-text: #1a202c;
+    --secondary-text: #4a5568;
+    --border-color: #e2e8f0;
+    --input-bg: #fdfdff;
+    --highlight-bg: #e6f7ff;
+    --profit-color: #2f855a;
+    --loss-color: #c53030;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--primary-text);
+    margin: 0;
+    padding: 2rem;
+}
+
+.simulator-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: var(--container-bg);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    overflow: hidden;
+}
+
+header {
+    background-color: var(--primary-text);
+    color: var(--container-bg);
+    padding: 1.5rem 2rem;
+    text-align: center;
+}
+
+header h1 { margin: 0; font-size: 1.75rem; }
+header p { margin: 0.25rem 0 0; opacity: 0.8; }
+main { padding: 2rem; }
+
+fieldset {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+legend {
+    font-weight: 700;
+    color: var(--primary-text);
+    padding: 0 0.5rem;
+    font-size: 1.2rem;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid var(--border-color);
+    margin: 1.5rem 0;
+}
+
+/* NOVO: Grid Layout para as linhas */
+.form-row, .form-row-dual, .result-row, .form-row-header {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr; /* 3 colunas: Label, Perc, Valor */
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 0 0.5rem;
+}
+
+.form-row-header {
+    font-weight: 700;
+    color: var(--secondary-text);
+    text-align: right;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--border-color);
+}
+.form-row-header span:first-child { text-align: left; }
+
+label, .result-row span:first-child {
+    text-align: left;
+    color: var(--primary-text);
+}
+
+.input-field, .result-value {
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 1rem;
+    text-align: right;
+    width: 100%;
+    box-sizing: border-box; /* Garante que padding não afete a largura */
+}
+
+.result-value {
+    border: 1px solid transparent; /* Alinhamento com inputs */
+    font-weight: 500;
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: #3182ce;
+    box-shadow: 0 0 0 2px rgba(49, 130, 206, 0.2);
+}
+
+.bold span { font-weight: 700; }
+
+.highlight {
+    background-color: var(--highlight-bg);
+    border-radius: 4px;
+    font-weight: 700;
+}
+.highlight span { font-weight: 700; }
+
+.final-profit { font-size: 1.2rem; }
+.profit { color: var(--profit-color); }
+.loss { color: var(--loss-color); }
+
+.checkbox-row {
+    grid-column: 1 / -1; /* Ocupa todas as colunas */
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
